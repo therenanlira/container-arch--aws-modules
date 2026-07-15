@@ -1,6 +1,4 @@
-########################################
-########### General
-########################################
+# General
 
 variable "project_name" {
   description = "The name of the project, used for tagging and naming resources."
@@ -12,7 +10,7 @@ variable "environment" {
   type        = string
 }
 
-variable "network_conf" {
+variable "network_values" {
   description = "The network configuration for the ECS cluster, including VPC and subnets."
   type = object({
     vpc_id             = string
@@ -23,9 +21,7 @@ variable "network_conf" {
   })
 }
 
-########################################
-########### ECS Cluster
-########################################
+# ECS Cluster
 
 variable "capacity_provider_strategies" {
   description = "A list of capacity provider strategies to use for the ECS cluster (e.g., ['on_demand', 'spot'])."
@@ -61,9 +57,7 @@ variable "ecs_volume_type" {
   type        = string
 }
 
-########################################
-########### Load Balancer
-########################################
+# Load Balancer
 
 variable "load_balancer_internal" {
   description = "Whether the load balancer should be internal (true) or internet-facing (false)."
@@ -76,9 +70,7 @@ variable "load_balancer_type" {
 }
 
 
-########################################
-########### Launch Template
-########################################
+# Launch Template
 
 variable "user_data_template" {
   description = "The user data template for the ECS instances."

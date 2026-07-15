@@ -1,8 +1,6 @@
-########################################
-########### General
-########################################
+# General
 
-variable "network_conf" {
+variable "network_values" {
   description = "A map containing the network configuration for the ECS service, including VPC and subnet information."
   type = object({
     vpc_id             = string

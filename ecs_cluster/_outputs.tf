@@ -1,6 +1,4 @@
-########################################
-########### Variables
-########################################
+# Variables
 
 output "project_name" {
   description = "The name of the project, used for tagging and naming resources."
@@ -12,9 +10,9 @@ output "environment" {
   value       = var.environment
 }
 
-output "network_conf" {
+output "network_values" {
   description = "The network configuration for the ECS cluster, including VPC and subnets."
-  value       = var.network_conf
+  value       = var.network_values
 }
 
 output "capacity_provider_strategies" {
@@ -62,17 +60,13 @@ output "user_data_template" {
   value       = var.user_data_template
 }
 
-########################################
-########### ECS Cluster
-########################################
+# ECS Cluster
 
 output "ecs_cluster_name" {
   value = aws_ecs_cluster.main.name
 }
 
-########################################
-########### Load Balancer
-########################################
+# Load Balancer
 
 output "lb_arn" {
   value = aws_lb.main.arn

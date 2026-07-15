@@ -2,9 +2,9 @@
 ########### Variables
 ########################################
 
-output "network_conf" {
+output "network_values" {
   description = "The network configuration for the ECS cluster"
-  value       = var.network_conf
+  value       = var.network_values
 }
 
 output "cluster_name" {

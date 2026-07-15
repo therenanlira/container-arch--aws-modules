@@ -1,10 +1,12 @@
+# Autoscaling Group
+
 resource "aws_autoscaling_group" "these" {
   for_each = toset(var.capacity_provider_strategies)
 
-  name_prefix = "${terraform.workspace}--${var.project_name}--${replace(each.value, "_", "-")}--asg"
+  name_prefix = "${local.name_prefix}-${replace(each.value, "_", "-")}--asg"
 
   vpc_zone_identifier = [
-    for sub in var.network_conf.private_subnet_ids : sub
+    for sub in var.network_values.private_subnet_ids : sub
   ]
 
   desired_capacity = var.ecs_autoscaling[each.value].desired
@@ -18,7 +20,7 @@ resource "aws_autoscaling_group" "these" {
 
   tag {
     key                 = "Name"
-    value               = "${terraform.workspace}--${var.project_name}--${replace(each.value, "_", "-")}--asg"
+    value               = "${local.name_prefix}-${replace(each.value, "_", "-")}--asg"
     propagate_at_launch = true
   }
 
@@ -41,7 +43,7 @@ resource "aws_autoscaling_group" "these" {
 resource "aws_ecs_capacity_provider" "these" {
   for_each = toset(var.capacity_provider_strategies)
 
-  name = "${terraform.workspace}--${var.project_name}--${replace(each.value, "_", "-")}--cp"
+  name = "${local.name_prefix}-${replace(each.value, "_", "-")}--cp"
 
   auto_scaling_group_provider {
     auto_scaling_group_arn = aws_autoscaling_group.these[each.value].arn
@@ -55,6 +57,6 @@ resource "aws_ecs_capacity_provider" "these" {
   }
 
   tags = merge(local.tags, {
-    Name = "${terraform.workspace}--${var.project_name}--${replace(each.value, "_", "-")}--cp"
+    Name = "${local.name_prefix}-${replace(each.value, "_", "-")}--cp"
   })
 }
