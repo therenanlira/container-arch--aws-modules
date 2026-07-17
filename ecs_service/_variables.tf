@@ -18,6 +18,8 @@ variable "cluster_name" {
   type        = string
 }
 
+# ECS Service
+
 variable "service_name" {
   description = "The name of the ECS service."
   type        = string
@@ -65,6 +67,96 @@ variable "service_hosts" {
 variable "service_listener" {
   description = "The Load Balancer Listener to be forwarded for"
   type        = string
+}
+
+# Autoscaling
+
+variable "alb_arn" {
+  description = "ECS Cluster ALB ARN"
+  type        = string
+  default     = null
+}
+
+variable "scale_type" {
+  description = "Type of the resource to be used on scale"
+  type        = string
+  validation {
+    condition = (
+      strcontains(var.scale_type, "cpu") ||
+      strcontains(var.scale_type, "cpu-tracking") ||
+      strcontains(var.scale_type, "requests-tracking")
+    )
+    error_message = "The value must be one of: \"cpu\", \"cpu-tracking\", \"requests-tracking\""
+  }
+  default = null
+}
+
+variable "scale_tracking_cpu" {
+  description = "Scale in and out based on CPU"
+  type        = number
+  default     = 80
+}
+
+variable "scale_tracking_requests" {
+  description = "Scale in and out based on requests"
+  type        = number
+  default     = 0
+}
+
+variable "task_min" {
+  description = "Minimum tasks"
+  type        = number
+  default     = 3
+}
+
+variable "task_max" {
+  description = "Maximum tasks"
+  type        = number
+  default     = 10
+}
+
+variable "scale_out_cpu" {
+  description = "Scale out based on CPU"
+  type = object({
+    threshold           = number
+    adjustment          = number
+    comparison_operator = string
+    statistic           = string
+    period              = number
+    evaluation_periods  = number
+    cooldown            = number
+  })
+  default = {
+    threshold           = 80
+    adjustment          = 1
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    statistic           = "Average"
+    period              = 60
+    evaluation_periods  = 2
+    cooldown            = 60
+  }
+}
+
+variable "scale_in_cpu" {
+  description = "Scale in based on CPU"
+  type = object({
+    threshold           = number
+    adjustment          = number
+    comparison_operator = string
+    statistic           = string
+    period              = number
+    evaluation_periods  = number
+    cooldown            = number
+  })
+  default = {
+    threshold           = 30
+    adjustment          = -1
+    comparison_operator = "LessThanOrEqualToThreshold"
+    statistic           = "Average"
+    period              = 120
+    evaluation_periods  = 3
+    cooldown            = 120
+  }
 }
 
 # Task Definition

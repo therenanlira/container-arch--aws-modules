@@ -15,6 +15,11 @@ resource "aws_ecs_service" "main" {
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 100
 
+  ordered_placement_strategy {
+    type  = strcontains(var.service_launch_type, "EC2") ? "spread" : null
+    field = strcontains(var.service_launch_type, "EC2") ? "attribute:ecs.availability-zone" : null
+  }
+
   deployment_circuit_breaker {
     enable   = true
     rollback = true

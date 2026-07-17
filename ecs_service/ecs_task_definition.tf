@@ -13,7 +13,7 @@ locals {
 }
 
 resource "aws_ecr_repository" "main" {
-  name         = "${local.name_prefix}-ecr"
+  name         = trimsuffix(local.name_prefix, "-")
   force_delete = true
 
   image_scanning_configuration {
@@ -21,7 +21,7 @@ resource "aws_ecr_repository" "main" {
   }
 
   tags = merge(local.tags, {
-    Name = "${local.name_prefix}-ecr"
+    Name = trimsuffix(local.name_prefix, "-")
   })
 }
 

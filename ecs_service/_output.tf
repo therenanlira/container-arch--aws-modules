@@ -44,6 +44,38 @@ output "service_hosts" {
   value = var.service_hosts
 }
 
+output "alb_arn" {
+  value = var.alb_arn
+}
+
+output "scale_type" {
+  value = var.scale_type
+}
+
+output "scale_tracking_cpu" {
+  value = var.scale_tracking_cpu
+}
+
+output "scale_tracking_requests" {
+  value = var.scale_tracking_requests
+}
+
+output "task_min" {
+  value = var.task_min
+}
+
+output "task_max" {
+  value = var.task_max
+}
+
+output "scale_out_cpu" {
+  value = var.scale_out_cpu
+}
+
+output "scale_in_cpu" {
+  value = var.scale_in_cpu
+}
+
 output "capabilities" {
   value = var.capabilities
 }
