@@ -47,11 +47,14 @@ variable "service_healthcheck" {
 
 variable "service_launch_type" {
   description = "The ECS Service Launch Type"
-  type        = string
-  validation {
-    condition     = strcontains(var.service_launch_type, "EC2")
-    error_message = "The acceptable values are: \"EC2\" or \"spot\""
-  }
+  type = list(object({
+    capacity_provider = string
+    weight            = number
+  }))
+  default = [{
+    capacity_provider = "FARGATE_SPOT"
+    weight            = 100
+  }]
 }
 
 variable "service_task_count" {

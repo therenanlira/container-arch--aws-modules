@@ -24,8 +24,18 @@ variable "network_values" {
 # ECS Cluster
 
 variable "capacity_provider_strategies" {
-  description = "A list of capacity provider strategies to use for the ECS cluster (e.g., ['on_demand', 'spot'])."
+  description = "A list of capacity provider strategies to use for the ECS cluster."
   type        = list(string)
+  default     = ["ON_DEMAND", "SPOT"]
+  validation {
+    condition = (
+      contains(var.capacity_provider_strategies, "ON_DEMAND") ||
+      contains(var.capacity_provider_strategies, "SPOT") ||
+      contains(var.capacity_provider_strategies, "FARGATE") ||
+      contains(var.capacity_provider_strategies, "FARGATE_SPOT")
+    )
+    error_message = "The value must be a list containing one or more of the values: [\"ON_DEMAND\", \"SPOT\", \"FARGATE\", \"FARGATE_SPOT\"]"
+  }
 }
 
 variable "ecs_autoscaling" {

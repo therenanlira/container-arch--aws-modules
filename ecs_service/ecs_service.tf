@@ -10,14 +10,24 @@ resource "aws_ecs_service" "main" {
 
   task_definition = aws_ecs_task_definition.main.arn
   desired_count   = var.service_task_count
-  launch_type     = var.service_launch_type
 
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 100
 
-  ordered_placement_strategy {
-    type  = strcontains(var.service_launch_type, "EC2") ? "spread" : null
-    field = strcontains(var.service_launch_type, "EC2") ? "attribute:ecs.availability-zone" : null
+  dynamic "ordered_placement_strategy" {
+    for_each = contains(var.service_launch_type, "EC2") ? [1] : []
+    content {
+      type  = "spread"
+      field = "attribute:ecs.availability-zone"
+    }
+  }
+
+  dynamic "capacity_provider_strategy" {
+    for_each = var.service_launch_type
+    content {
+      capacity_provider = capacity_provider_strategy.value.capacity_provider
+      weight            = capacity_provider_strategy.value.weight
+    }
   }
 
   deployment_circuit_breaker {
@@ -37,7 +47,7 @@ resource "aws_ecs_service" "main" {
     container_port   = var.service_port
   }
 
-  platform_version = strcontains(var.service_launch_type, "EC2") ? null : "LATEST"
+  platform_version = contains(var.service_launch_type, "EC2") ? null : "LATEST"
 
   lifecycle {
     ignore_changes = [

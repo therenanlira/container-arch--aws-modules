@@ -27,7 +27,7 @@ resource "aws_launch_template" "these" {
   }
 
   dynamic "instance_market_options" {
-    for_each = contains(toset(var.capacity_provider_strategies), "spot") ? [0] : []
+    for_each = contains(toset(var.capacity_provider_strategies), "SPOT") ? [0] : []
     content {
       market_type = "spot"
       spot_options {

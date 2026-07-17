@@ -21,11 +21,20 @@ resource "aws_ecs_cluster_capacity_providers" "main" {
   ]
 
   dynamic "default_capacity_provider_strategy" {
-    for_each = contains(toset(var.capacity_provider_strategies), "on_demand") ? [0] : []
+    for_each = contains(toset(var.capacity_provider_strategies), "ON_DEMAND") ? [0] : []
     content {
-      capacity_provider = aws_ecs_capacity_provider.these["on_demand"].name
+      capacity_provider = aws_ecs_capacity_provider.these["ON_DEMAND"].name
       weight            = 100
       base              = 0
+    }
+  }
+
+  dynamic "default_capacity_provider_strategy" {
+    for_each = contains(toset(var.capacity_provider_strategies), "FARGATE") ? [0] : []
+    content {
+      capacity_provider = aws_ecs_capacity_provider.these["FARGATE"].name
+      weight            = 100
+      base              = 1
     }
   }
 }
