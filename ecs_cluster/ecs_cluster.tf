@@ -66,7 +66,7 @@ resource "aws_vpc_security_group_ingress_rule" "ecs_cluster_inbound_all_vpc" {
   security_group_id = aws_security_group.ecs_cluster.id
 
   ip_protocol = "-1"
-  cidr_ipv4   = var.network_values.vpc_cidr_block
+  cidr_ipv4   = var.network_values.cidr_block
 
   tags = {
     Name = "${local.name_prefix}-ecs-sg inbound all from VPC"
