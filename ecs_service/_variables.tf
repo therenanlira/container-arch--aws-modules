@@ -1,7 +1,7 @@
 # General
 
 variable "network_values" {
-  description = "The network configuration for the ECS cluster, including VPC and subnets."
+  description = "The network configuration values, including VPC and subnets."
   type = object({
     vpc_id             = string
     private_subnet_ids = map(string)
@@ -175,7 +175,20 @@ variable "capabilities" {
 
 variable "environment_variables" {
   description = "A list of map containing the environemnt variables"
-  type        = list(map(string))
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  default = []
+}
+
+variable "secrets" {
+  description = "A list of map containing the secrets coming from SSM Parameter Store or Secrets Manager"
+  type = list(object({
+    name      = string
+    valueFrom = string
+  }))
+  default = []
 }
 
 # EFS

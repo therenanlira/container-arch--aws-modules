@@ -45,7 +45,9 @@ resource "aws_iam_role_policy" "ecs_service_execution_role" {
           "ecr:BatchGetImage",
           "ecr:GetDownloadUrlForLayer",
           "logs:CreateLogStream",
-          "logs:PutLogEvents"
+          "logs:PutLogEvents",
+          "ssm:GetParameters",
+          "secretsmanager:GetSecretValue"
         ]
         Resource = "*"
       }

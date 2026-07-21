@@ -84,6 +84,10 @@ output "environment_variables" {
   value = var.environment_variables
 }
 
+output "secrets" {
+  value = var.secrets
+}
+
 output "efs_volumes" {
   value = var.efs_volumes
 }

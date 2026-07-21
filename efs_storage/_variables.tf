@@ -1,12 +1,12 @@
 # General
 
 variable "service_name" {
-  description = "The name of the ECS service."
+  description = "The name of the EFS service."
   type        = string
 }
 
 variable "network_values" {
-  description = "The network configuration for the ECS cluster, including VPC and subnets."
+  description = "The network configuration values, including VPC and subnets."
   type = object({
     vpc_id             = string
     private_subnet_ids = map(string)

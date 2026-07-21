@@ -36,7 +36,8 @@ resource "aws_ecs_task_definition" "main" {
   dynamic "volume" {
     for_each = var.efs_volumes
     content {
-      name = volume.value.volume_name
+      name                = volume.value.volume_name
+      configure_at_launch = false
 
       efs_volume_configuration {
         file_system_id     = volume.value.file_system_id
@@ -78,6 +79,7 @@ resource "aws_ecs_task_definition" "main" {
     ]
 
     environment = var.environment_variables
+    secrets     = var.secrets
   }])
 
   tags = merge(local.tags, {

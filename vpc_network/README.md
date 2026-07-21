@@ -1,4 +1,4 @@
-# network
+# vpc_network
 
 Provisiona uma VPC com subnets públicas, privadas e de dados distribuídas entre AZs, tabelas de rota e VPC endpoints (gateway).
 
@@ -6,7 +6,7 @@ Provisiona uma VPC com subnets públicas, privadas e de dados distribuídas entr
 
 ```hcl
 module "vpc" {
-  source = "git::https://github.com/therenanlira/container-arch--aws-modules.git//network?ref=v1"
+  source = "git::https://github.com/therenanlira/container-arch--aws-modules.git//vpc_network?ref=v1"
 
   project_name = "container-arch"
   environment  = "dev"
