@@ -14,7 +14,7 @@ variable "network_values" {
   description = "The network configuration for the ECS cluster, including VPC and subnets."
   type = object({
     vpc_id             = string
-    cidr_block         = string
+    vpc_cidr_block     = string
     private_subnet_ids = map(string)
     public_subnet_ids  = map(string)
   })
