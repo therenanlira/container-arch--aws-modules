@@ -1,7 +1,7 @@
 # Launch Template
 
 resource "aws_launch_template" "these" {
-  for_each = toset(var.capacity_provider_strategies)
+  for_each = toset(local.ec2_capacity_providers)
 
   name_prefix = "${local.name_prefix}-${replace(each.value, "_", "-")}--lt"
 
@@ -27,7 +27,7 @@ resource "aws_launch_template" "these" {
   }
 
   dynamic "instance_market_options" {
-    for_each = contains(toset(var.capacity_provider_strategies), "SPOT") ? [0] : []
+    for_each = each.value == "SPOT" ? [0] : []
     content {
       market_type = "spot"
       spot_options {

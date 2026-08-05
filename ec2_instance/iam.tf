@@ -1,0 +1,41 @@
+# EC2 IAM Role
+
+resource "aws_iam_role" "ec2" {
+  name = substr("${local.name_prefix}-role", 0, 63)
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+    }]
+  })
+
+  tags = merge(local.tags, {
+    Name = substr("${local.name_prefix}-role", 0, 63)
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ssm_role" {
+  role       = aws_iam_role.ec2.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_role_policy_attachment" "these" {
+  for_each = toset(var.iam_policy_arns)
+
+  role       = aws_iam_role.ec2.name
+  policy_arn = each.value
+}
+
+resource "aws_iam_instance_profile" "ec2" {
+  name = substr("${local.name_prefix}-instance-profile", 0, 63)
+  role = aws_iam_role.ec2.name
+
+  tags = merge(local.tags, {
+    Name = substr("${local.name_prefix}-instance-profile", 0, 63)
+  })
+}

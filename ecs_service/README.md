@@ -86,4 +86,8 @@ module "ecs_service" {
 
 ## Outputs
 
-Nenhum output próprio — o módulo apenas ecoa as variáveis recebidas.
+| Nome | Descrição |
+| --- | --- |
+| `target_group_arn` | ARN do target group do serviço (`null` quando `enable_lb = false`) |
+
+Os demais outputs apenas ecoam as variáveis recebidas.

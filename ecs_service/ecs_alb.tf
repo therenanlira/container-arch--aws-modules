@@ -1,7 +1,9 @@
 # ALB Target Group
 
 resource "aws_alb_target_group" "main" {
-  name = "${local.name_prefix}-alb-tg"
+  count = var.enable_lb ? 1 : 0
+
+  name = local.target_group_name
 
   port        = var.service_port
   vpc_id      = var.network_values.vpc_id
@@ -26,11 +28,12 @@ resource "aws_alb_target_group" "main" {
 # ALB Listener Rule
 
 resource "aws_alb_listener_rule" "main" {
+  count        = var.enable_lb ? 1 : 0
   listener_arn = var.service_listener
 
   action {
     type             = "forward"
-    target_group_arn = aws_alb_target_group.main.arn
+    target_group_arn = aws_alb_target_group.main[0].arn
   }
 
   condition {

@@ -10,6 +10,7 @@ Módulos Terraform reutilizáveis para a arquitetura de containers na AWS (VPC, 
 | [`ecs_cluster`](ecs_cluster/README.md) | Cluster ECS, capacity providers, ASG e Load Balancer |
 | [`ecs_service`](ecs_service/README.md) | Serviço ECS, task definition, target group, autoscaling e EFS mounts |
 | [`ecr_repository`](ecr_repository/README.md) | Repositório ECR (usado internamente por `ecs_service`) |
+| [`ec2_instance`](ec2_instance/README.md) | Instância EC2 simples (bastion) com acesso via SSM |
 | [`efs_storage`](efs_storage/README.md) | Sistema de arquivos EFS |
 | [`ssm_parameter_store`](ssm_parameter_store/README.md) | Parâmetro no SSM Parameter Store |
 | [`ssm_secrets_manager`](ssm_secrets_manager/README.md) | Segredo no AWS Secrets Manager |

@@ -71,11 +71,13 @@ variable "ecs_volume_type" {
 variable "load_balancer_internal" {
   description = "Whether the load balancer should be internal (true) or internet-facing (false)."
   type        = bool
+  default     = false
 }
 
 variable "load_balancer_type" {
   description = "The type of load balancer to create (e.g., 'application', 'network')."
   type        = string
+  default     = "application"
 }
 
 

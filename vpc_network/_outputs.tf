@@ -32,3 +32,13 @@ output "public_subnet_ids" {
 output "data_subnet_ids" {
   value = { for az in local.vpc_azs : az => aws_subnet.these_data[az].id }
 }
+
+# DNS
+
+output "dns_zone_id" {
+  value = aws_route53_zone.private.zone_id
+}
+
+output "dns_name" {
+  value = aws_route53_zone.private.name
+}

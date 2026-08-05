@@ -156,7 +156,7 @@ resource "aws_appautoscaling_policy" "cpu_target_tracking" {
 # Autoscaling tracking Requests
 
 resource "aws_appautoscaling_policy" "requests_target_tracking" {
-  count = strcontains(var.scale_type, "requests-tracking") ? 1 : 0
+  count = var.enable_lb && strcontains(var.scale_type, "requests-tracking") ? 1 : 0
 
   name = "${local.name_prefix}-requests-tracking"
 
@@ -173,7 +173,7 @@ resource "aws_appautoscaling_policy" "requests_target_tracking" {
 
     predefined_metric_specification {
       predefined_metric_type = "ALBRequestCountPerTarget"
-      resource_label         = "${data.aws_alb.main.arn_suffix}/${aws_alb_target_group.main.arn_suffix}"
+      resource_label         = "${data.aws_alb.main[0].arn_suffix}/${local.target_group_arn_suffix}"
     }
   }
 }

@@ -1,18 +1,21 @@
 # Elastic Container Registry
 
 data "external" "ecr_latest_image" {
+  count   = var.container_image == "" ? 1 : 0
   program = ["bash", "${path.module}/scripts/check_ecr_latest_tag.sh"]
 
   query = {
-    repository_name = module.ecr_repository.name
+    repository_name = module.ecr_repository[0].name
   }
 }
 
 locals {
-  default_app_image_tag = data.external.ecr_latest_image.result.tag
+  default_app_image_tag = var.container_image == "" ? data.external.ecr_latest_image[0].result.tag : var.container_image
+  container_image       = var.container_image == "" ? "${module.ecr_repository[0].repository_url}:${local.default_app_image_tag}" : var.container_image
 }
 
 module "ecr_repository" {
+  count  = var.container_image == "" ? 1 : 0
   source = "../ecr_repository"
 
   service_name = var.service_name
@@ -49,16 +52,18 @@ resource "aws_ecs_task_definition" "main" {
 
   container_definitions = jsonencode([{
     name   = var.service_name
-    image  = "${module.ecr_repository.repository_url}:${local.default_app_image_tag}"
+    image  = local.container_image
     cpu    = var.service_cpu
     memory = var.service_mem
 
     essential = true
 
     portMappings = [{
+      name          = var.service_name
       containerPort = var.service_port
       hostPort      = var.service_port
-      protocol      = "tcp"
+      protocol      = var.protocol
+      appProtocol   = var.service_protocol
     }]
 
     logConfiguration = {
@@ -77,6 +82,9 @@ resource "aws_ecs_task_definition" "main" {
         readOnly      = volume.read_only
       }
     ]
+
+    systemControls = []
+    volumesFrom    = []
 
     environment = var.environment_variables
     secrets     = var.secrets
