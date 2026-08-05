@@ -16,9 +16,10 @@ resource "aws_ecs_cluster" "main" {
 resource "aws_ecs_cluster_capacity_providers" "main" {
   cluster_name = aws_ecs_cluster.main.name
 
-  capacity_providers = [
-    for cp in aws_ecs_capacity_provider.these : cp.name
-  ]
+  capacity_providers = concat(
+    [for cp in aws_ecs_capacity_provider.these : cp.name],
+    local.fargate_capacity_providers
+  )
 
   dynamic "default_capacity_provider_strategy" {
     for_each = contains(toset(var.capacity_provider_strategies), "ON_DEMAND") ? [0] : []
@@ -32,7 +33,7 @@ resource "aws_ecs_cluster_capacity_providers" "main" {
   dynamic "default_capacity_provider_strategy" {
     for_each = contains(toset(var.capacity_provider_strategies), "FARGATE") ? [0] : []
     content {
-      capacity_provider = aws_ecs_capacity_provider.these["FARGATE"].name
+      capacity_provider = "FARGATE"
       weight            = 100
       base              = 1
     }

@@ -1,7 +1,7 @@
 # Autoscaling Group
 
 resource "aws_autoscaling_group" "these" {
-  for_each = toset(var.capacity_provider_strategies)
+  for_each = toset(local.ec2_capacity_providers)
 
   name_prefix = "${local.name_prefix}-${replace(each.value, "_", "-")}--asg"
 
@@ -47,7 +47,7 @@ resource "aws_autoscaling_group" "these" {
 }
 
 resource "aws_ecs_capacity_provider" "these" {
-  for_each = toset(var.capacity_provider_strategies)
+  for_each = toset(local.ec2_capacity_providers)
 
   name = "${local.name_prefix}-${replace(each.value, "_", "-")}--cp"
 

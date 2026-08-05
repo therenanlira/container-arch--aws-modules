@@ -64,6 +64,24 @@ output "lb_dns_name" {
   value = aws_lb.main.dns_name
 }
 
+output "lb_zone_id" {
+  value = aws_lb.main.zone_id
+}
+
 output "lb_listener_arn" {
   value = aws_lb_listener.main.arn
+}
+
+# Service Discovery
+
+output "cloudmap" {
+  value = aws_service_discovery_private_dns_namespace.main.id
+}
+
+output "cloudmap_name" {
+  value = aws_service_discovery_private_dns_namespace.main.name
+}
+
+output "cloudmap_arn" {
+  value = aws_service_discovery_private_dns_namespace.main.arn
 }

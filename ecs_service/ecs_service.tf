@@ -9,10 +9,19 @@ resource "aws_ecs_service" "main" {
   cluster = var.cluster_name
 
   task_definition = aws_ecs_task_definition.main.arn
-  desired_count   = var.service_task_count
+  desired_count   = var.task_count
 
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 100
+
+
+  dynamic "service_registries" {
+    for_each = var.service_discovery_namespace != null ? [1] : []
+    content {
+      registry_arn   = aws_service_discovery_service.main[0].arn
+      container_name = var.service_name
+    }
+  }
 
   dynamic "ordered_placement_strategy" {
     for_each = contains(var.service_launch_type, "EC2") ? [1] : []
@@ -30,6 +39,25 @@ resource "aws_ecs_service" "main" {
     }
   }
 
+  dynamic "service_connect_configuration" {
+    for_each = var.enable_service_connect ? [1] : []
+
+    content {
+      enabled   = var.enable_service_connect
+      namespace = var.service_connect_name
+
+      service {
+        port_name      = var.service_name
+        discovery_name = var.service_name
+
+        client_alias {
+          port     = var.service_port
+          dns_name = "${var.service_name}.${var.service_connect_name}"
+        }
+      }
+
+    }
+  }
   deployment_circuit_breaker {
     enable   = true
     rollback = true
@@ -41,10 +69,13 @@ resource "aws_ecs_service" "main" {
     assign_public_ip = false
   }
 
-  load_balancer {
-    target_group_arn = aws_alb_target_group.main.arn
-    container_name   = var.service_name
-    container_port   = var.service_port
+  dynamic "load_balancer" {
+    for_each = var.enable_lb ? [1] : []
+    content {
+      target_group_arn = local.target_group_arn
+      container_name   = var.service_name
+      container_port   = var.service_port
+    }
   }
 
   platform_version = contains(var.service_launch_type, "EC2") ? null : "LATEST"

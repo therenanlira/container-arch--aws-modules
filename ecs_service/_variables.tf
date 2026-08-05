@@ -18,6 +18,28 @@ variable "cluster_name" {
   type        = string
 }
 
+# DNS
+
+variable "dns_zone_id" {
+  description = "The DNS Zone ID value."
+  type        = string
+  default     = ""
+}
+
+variable "dns_name" {
+  description = "The DNS Name value."
+  type        = string
+  default     = ""
+}
+
+# Service Discovery
+
+variable "service_discovery_namespace" {
+  description = "The Service Discovery Namespace"
+  type        = string
+  default     = null
+}
+
 # ECS Service
 
 variable "service_name" {
@@ -57,19 +79,51 @@ variable "service_launch_type" {
   }]
 }
 
-variable "service_task_count" {
-  description = "The amount of tasks that will be running"
-  type        = number
-}
-
 variable "service_hosts" {
   description = "List of hosts to be used in ECS Service"
   type        = list(string)
 }
 
+variable "enable_service_connect" {
+  description = "Enable or not the use of Service Connect"
+  type        = bool
+  default     = false
+}
+
+variable "service_connect_name" {
+  description = "Service Connect Name"
+  type        = string
+  default     = null
+}
+
+variable "service_protocol" {
+  description = "Service protocol. Example: http, https, grpc ou tcp."
+  type        = string
+  default     = null
+}
+
+variable "protocol" {
+  description = "Comunication protocol. Example: udp ou tcp."
+  type        = string
+  default     = "tcp"
+}
+
+# Load Balancer
+
+variable "enable_lb" {
+  description = "Enable or not the use of Load Balancer"
+  type        = bool
+  default     = true
+}
+
 variable "service_listener" {
   description = "The Load Balancer Listener to be forwarded for"
   type        = string
+  default     = ""
+  validation {
+    condition     = !var.enable_lb || var.service_listener != ""
+    error_message = "enable_lb = true requires service_listener with the ARN of the load balancer listener the rule is attached to."
+  }
 }
 
 # Autoscaling
@@ -77,7 +131,19 @@ variable "service_listener" {
 variable "alb_arn" {
   description = "ECS Cluster ALB ARN"
   type        = string
-  default     = null
+  default     = ""
+}
+
+variable "alb_dns_name" {
+  description = "ECS Cluster ALB DNS Name"
+  type        = string
+  default     = ""
+}
+
+variable "alb_zone_id" {
+  description = "ECS Cluster ALB Zone ID"
+  type        = string
+  default     = ""
 }
 
 variable "scale_type" {
@@ -85,13 +151,14 @@ variable "scale_type" {
   type        = string
   validation {
     condition = (
+      strcontains(var.scale_type, "") ||
       strcontains(var.scale_type, "cpu") ||
       strcontains(var.scale_type, "cpu-tracking") ||
       strcontains(var.scale_type, "requests-tracking")
     )
-    error_message = "The value must be one of: \"cpu\", \"cpu-tracking\", \"requests-tracking\""
+    error_message = "The value must be empty string or one of: \"cpu\", \"cpu-tracking\", \"requests-tracking\""
   }
-  default = null
+  default = ""
 }
 
 variable "scale_tracking_cpu" {
@@ -116,6 +183,11 @@ variable "task_max" {
   description = "Maximum tasks"
   type        = number
   default     = 10
+}
+
+variable "task_count" {
+  description = "The amount of tasks that will be running"
+  type        = number
 }
 
 variable "scale_out_cpu" {
@@ -164,9 +236,16 @@ variable "scale_in_cpu" {
 
 # Task Definition
 
+variable "container_image" {
+  description = "Container image path. Generally refer to an external registry"
+  type        = string
+  default     = ""
+}
+
 variable "capabilities" {
   description = "A list of acceptable capabilities"
   type        = list(string)
+  default     = ["EC2"]
   validation {
     condition     = contains(var.capabilities, "EC2")
     error_message = "The list must contains one or all of these values: [\"EC2\"]"
