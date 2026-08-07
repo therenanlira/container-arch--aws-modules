@@ -74,7 +74,7 @@ output "lb_listener_arn" {
 
 # Service Discovery
 
-output "cloudmap" {
+output "cloudmap_id" {
   value = aws_service_discovery_private_dns_namespace.main.id
 }
 
@@ -84,4 +84,16 @@ output "cloudmap_name" {
 
 output "cloudmap_arn" {
   value = aws_service_discovery_private_dns_namespace.main.arn
+}
+
+output "service_connect_id" {
+  value = aws_service_discovery_private_dns_namespace.local.id
+}
+
+output "service_connect_name" {
+  value = aws_service_discovery_private_dns_namespace.local.name
+}
+
+output "service_connect_arn" {
+  value = aws_service_discovery_private_dns_namespace.local.arn
 }

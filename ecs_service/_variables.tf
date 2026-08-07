@@ -96,6 +96,12 @@ variable "service_connect_name" {
   default     = null
 }
 
+variable "service_connect_arn" {
+  description = "Service Connect ARN"
+  type        = string
+  default     = null
+}
+
 variable "service_protocol" {
   description = "Service protocol. Example: http, https, grpc ou tcp."
   type        = string
