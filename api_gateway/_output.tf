@@ -1,9 +1,5 @@
 # Variables
 
-output "network_values" {
-  value = var.network_values
-}
-
 output "project_name" {
   value = var.project_name
 }

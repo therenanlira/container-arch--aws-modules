@@ -15,6 +15,10 @@ resource "aws_iam_role" "api_gateway_logging" {
       }
     ]
   })
+
+  tags = merge(local.common_tags, {
+    Name = "${data.aws_caller_identity.current.account_id}-apigw-role"
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "api_gateway_logging" {

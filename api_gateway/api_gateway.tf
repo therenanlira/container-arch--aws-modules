@@ -33,10 +33,10 @@ resource "aws_api_gateway_stage" "main" {
       destination_arn = aws_cloudwatch_log_group.main[0].arn
       format = jsonencode({
         requestId         = "$context.requestId",
-        ip                = "$context.identity. sourceIp",
-        caller            = "$context.identity. caller",
-        user              = "$context.identity. user",
-        requestTime       = "seontext.requestTime",
+        ip                = "$context.identity.sourceIp",
+        caller            = "$context.identity.caller",
+        user              = "$context.identity.user",
+        requestTime       = "$context.requestTime",
         httpMethod        = "$context.httpMethod",
         resourcePath      = "$context.resourcePath",
         status            = "$context.status"

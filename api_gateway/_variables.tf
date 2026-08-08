@@ -1,13 +1,5 @@
 # General
 
-variable "network_values" {
-  description = "The network configuration values, including VPC and subnets."
-  type = object({
-    vpc_id             = string
-    private_subnet_ids = map(string)
-  })
-}
-
 variable "project_name" {
   description = "The name of the project, used for tagging and naming resources."
   type        = string
