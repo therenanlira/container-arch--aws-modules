@@ -72,6 +72,12 @@ output "lb_listener_arn" {
   value = aws_lb_listener.main.arn
 }
 
+# API Gateway
+
+output "api_gateway_id" {
+  value = aws_api_gateway_vpc_link.main[0].id
+}
+
 # Service Discovery
 
 output "cloudmap_id" {

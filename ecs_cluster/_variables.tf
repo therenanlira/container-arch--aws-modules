@@ -80,6 +80,11 @@ variable "load_balancer_type" {
   default     = "application"
 }
 
+variable "enable_vpclink" {
+  description = "Whether to create VPC Link Load Balancer"
+  type        = bool
+  default     = false
+}
 
 # Launch Template
 
