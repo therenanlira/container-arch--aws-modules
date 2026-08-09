@@ -24,12 +24,12 @@ resource "aws_iam_role" "api_gateway_logging" {
 resource "aws_iam_role_policy_attachment" "api_gateway_logging" {
   count = var.api_gateway_logging ? 1 : 0
 
-  role       = aws_iam_role.api_gateway_logging[0].name
+  role       = aws_iam_role.api_gateway_logging[count.index].name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
 }
 
 resource "aws_api_gateway_account" "api_gateway_logging" {
   count = var.api_gateway_logging ? 1 : 0
 
-  cloudwatch_role_arn = aws_iam_role.api_gateway_logging[0].arn
+  cloudwatch_role_arn = aws_iam_role.api_gateway_logging[count.index].arn
 }
