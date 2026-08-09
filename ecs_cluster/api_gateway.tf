@@ -9,7 +9,7 @@ resource "aws_lb" "vpclink" {
   load_balancer_type = "network"
 
   subnets         = [for sub in var.network_values.private_subnet_ids : sub]
-  security_groups = [aws_security_group.vpclink[0].id]
+  security_groups = [aws_security_group.vpclink[count.index].id]
 
   enable_cross_zone_load_balancing = false
   enable_deletion_protection       = false
@@ -42,14 +42,14 @@ resource "aws_lb_target_group" "vpclink" {
 resource "aws_lb_listener" "vpclink" {
   count = var.enable_vpclink ? 1 : 0
 
-  load_balancer_arn = aws_lb.vpclink[0].arn
+  load_balancer_arn = aws_lb.vpclink[count.index].arn
 
   port     = 80
   protocol = "TCP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.vpclink[0].arn
+    target_group_arn = aws_lb_target_group.vpclink[count.index].arn
   }
 
   tags = {
@@ -58,9 +58,15 @@ resource "aws_lb_listener" "vpclink" {
 }
 
 resource "aws_lb_target_group_attachment" "vpclink" {
-  target_group_arn = aws_lb_target_group.vpclink[0].arn
+  count = var.enable_vpclink ? 1 : 0
+
+  target_group_arn = aws_lb_target_group.vpclink[count.index].arn
   target_id        = aws_lb.main.id
   port             = 80
+
+  depends_on = [
+    aws_lb_listener.main
+  ]
 }
 
 # API Gateway - VPC Link
@@ -71,6 +77,6 @@ resource "aws_api_gateway_vpc_link" "main" {
   name = "${local.name_prefix}-vpclink-apigw"
 
   target_arns = [
-    aws_lb.vpclink[0].arn
+    aws_lb.vpclink[count.index].arn
   ]
 }

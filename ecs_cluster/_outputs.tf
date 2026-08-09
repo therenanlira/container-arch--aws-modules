@@ -60,6 +60,10 @@ output "lb_arn" {
   value = aws_lb.main.arn
 }
 
+output "lb_arn_suffix" {
+  value = aws_lb.main.arn_suffix
+}
+
 output "lb_dns_name" {
   value = aws_lb.main.dns_name
 }
@@ -75,7 +79,7 @@ output "lb_listener_arn" {
 # API Gateway
 
 output "api_gateway_id" {
-  value = aws_api_gateway_vpc_link.main[0].id
+  value = one(aws_api_gateway_vpc_link.main[*].id)
 }
 
 # Service Discovery

@@ -140,6 +140,12 @@ variable "alb_arn" {
   default     = ""
 }
 
+variable "alb_arn_suffix" {
+  description = "ECS Cluster ALB ARN Suffix"
+  type        = string
+  default     = ""
+}
+
 variable "alb_dns_name" {
   description = "ECS Cluster ALB DNS Name"
   type        = string
@@ -288,4 +294,86 @@ variable "efs_volumes" {
     read_only        = bool
   }))
   default = []
+}
+
+# Deployment
+
+variable "deployment_controller" {
+  description = "The Deployment Controler. Example: 'ECS' or 'CODE_DEPLOY'"
+  type        = string
+  default     = "ECS"
+  nullable    = false
+  validation {
+    condition     = contains(["ECS", "CODE_DEPLOY"], var.deployment_controller)
+    error_message = "The value must be one of: [\"ECS\", \"CODE_DEPLOY\"]"
+  }
+}
+
+variable "ecs_deployment_type" {
+  description = "The ECS native deployment strategy. 'ROLLING' replaces the running tasks in place, 'BLUE_GREEN' starts a whole new revision and shifts the traffic to it. Only used with the 'ECS' deployment controller."
+  type        = string
+  default     = "ROLLING"
+  nullable    = false
+  validation {
+    condition     = contains(["ROLLING", "BLUE_GREEN"], var.ecs_deployment_type)
+    error_message = "The value must be one of: [\"ROLLING\", \"BLUE_GREEN\"]"
+  }
+  validation {
+    condition     = var.ecs_deployment_type != "BLUE_GREEN" || var.deployment_controller == "ECS"
+    error_message = "BLUE_GREEN is the native ECS strategy and requires deployment_controller = \"ECS\". CodeDeploy has its own blue/green settings."
+  }
+}
+
+variable "ecs_bake_time_in_minutes" {
+  description = "How long the blue (old) and green (new) revisions stay up after the traffic is shifted, before ECS terminates the blue one. A rollback during this window is immediate."
+  type        = number
+  default     = 5
+}
+
+variable "codedeploy_strategy" {
+  description = "The Code Deploy Strategy. Example: 'CodeDeployDefault.AllAtOnce'"
+  type        = string
+  default     = "CodeDeployDefault.ECSAllAtOnce"
+}
+
+variable "codedeploy_deployment_option" {
+  description = "The Code Deploy deployment options. Example: 'WITH_TRAFFIC_CONTROL'"
+  type        = string
+  default     = "WITH_TRAFFIC_CONTROL"
+}
+
+variable "codedeploy_deployment_type" {
+  description = "The Code Deploy deployment type. Example: 'BLUE_GREEN'"
+  type        = string
+  default     = "BLUE_GREEN"
+}
+
+variable "codedeploy_deployment_termination" {
+  description = "The Code Deploy deployment termination wait time in minutes. Example: '5'"
+  type        = number
+  default     = 5
+}
+
+variable "enable_codedeploy_rollback" {
+  description = "Enable or not the Code Deploy automatic rollback"
+  type        = bool
+  default     = true
+}
+
+variable "codedeploy_rollback_threshold" {
+  description = "The Code Deploy alarm threshold"
+  type        = number
+  default     = 10
+}
+
+variable "codedeploy_rollback_period" {
+  description = "The Code Deploy alarm period"
+  type        = number
+  default     = 60
+}
+
+variable "codedeploy_rollback_error_evaluation_period" {
+  description = "The Code Deploy alarm error evaluation period"
+  type        = number
+  default     = 1
 }

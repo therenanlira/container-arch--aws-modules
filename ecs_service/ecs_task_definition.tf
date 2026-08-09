@@ -5,7 +5,7 @@ data "external" "ecr_latest_image" {
   program = ["bash", "${path.module}/scripts/check_ecr_latest_tag.sh"]
 
   query = {
-    repository_name = module.ecr_repository[0].name
+    repository_name = module.ecr_repository[count.index].name
   }
 }
 

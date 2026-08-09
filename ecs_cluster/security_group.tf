@@ -63,7 +63,7 @@ resource "aws_security_group" "vpclink" {
 resource "aws_vpc_security_group_egress_rule" "vpclink_outbound_all" {
   count = var.enable_vpclink ? 1 : 0
 
-  security_group_id = aws_security_group.vpclink[0].id
+  security_group_id = aws_security_group.vpclink[count.index].id
 
   ip_protocol = "-1"
   cidr_ipv4   = "0.0.0.0/0"
@@ -76,7 +76,7 @@ resource "aws_vpc_security_group_egress_rule" "vpclink_outbound_all" {
 resource "aws_vpc_security_group_ingress_rule" "vpclink_inbound_http" {
   count = var.enable_vpclink ? 1 : 0
 
-  security_group_id = aws_security_group.vpclink[0].id
+  security_group_id = aws_security_group.vpclink[count.index].id
 
   from_port   = 80
   to_port     = 80

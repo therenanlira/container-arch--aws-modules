@@ -83,6 +83,38 @@ module "ecs_service" {
 | `environment_variables` | Lista de `{name, value}` do container | `list(object)` | `[]` |
 | `secrets` | Lista de `{name, valueFrom}` — `valueFrom` é o ARN de um parâmetro/segredo (ex.: output `arn` de [`ssm_parameter_store`](../ssm_parameter_store) ou [`ssm_secrets_manager`](../ssm_secrets_manager)) | `list(object)` | `[]` |
 | `efs_volumes` | Lista de volumes EFS a montar (`volume_name`, `file_system_id`, `file_system_root`, `mount_point`, `read_only`) | `list(object)` | `[]` |
+| `deployment_controller` | `ECS` (nativo) ou `CODE_DEPLOY` | `string` | `"ECS"` |
+| `ecs_deployment_type` | Estratégia nativa do ECS: `ROLLING` ou `BLUE_GREEN` | `string` | `"ROLLING"` |
+| `ecs_bake_time_in_minutes` | Tempo que blue e green convivem após o desvio do tráfego, antes do ECS matar o blue | `number` | `5` |
+
+## Deployment
+
+O `deployment_controller` escolhe **quem** conduz o rollout, e o `ecs_deployment_type` escolhe **como**, quando quem conduz é o próprio ECS:
+
+| Configuração | O que acontece |
+| --- | --- |
+| `ECS` + `ROLLING` (default) | Substitui as tasks no lugar, com `deployment_circuit_breaker` e rollback automático |
+| `ECS` + `BLUE_GREEN` | Sobe uma revisão nova inteira (green), desvia o tráfego, espera o bake time e só então mata a antiga (blue) |
+| `CODE_DEPLOY` | Blue/green pelo CodeDeploy, com os target groups `blue`/`green` e o deployment group |
+
+### Blue/green nativo
+
+Lançado pela AWS em julho/2025, resolve o mesmo problema do CodeDeploy sem serviço extra, sem AppSpec e — diferente do CodeDeploy — **funciona com Service Connect**. A estratégia é um atributo do próprio serviço:
+
+```hcl
+deployment_controller = "ECS"
+ecs_deployment_type   = "BLUE_GREEN"
+```
+
+Com `enable_lb = true`, o módulo cria automaticamente o que o ECS precisa para desviar o tráfego:
+
+- um **target group alternativo** (`-a-tg`), onde a revisão green é registrada;
+- uma **role de infraestrutura** com a policy `AmazonECSInfrastructureRolePolicyForLoadBalancers`, que autoriza o ECS a reescrever a regra do listener;
+- o bloco `advanced_configuration` no serviço, ligando target group primário, alternativo e a listener rule de produção.
+
+Com `enable_lb = false` (serviços que só conversam por Service Connect), nada disso é necessário: o ECS faz o desvio no proxy do Service Connect.
+
+Durante o deploy o ECS roda as duas revisões ao mesmo tempo, então o cluster precisa de capacidade para o dobro de tasks daquele serviço. O rollback dentro da janela de bake é imediato — é só o tráfego voltar para o blue, que ainda está de pé.
 
 ## Outputs
 
