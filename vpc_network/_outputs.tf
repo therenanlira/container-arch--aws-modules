@@ -33,6 +33,14 @@ output "data_subnet_ids" {
   value = { for az in local.vpc_azs : az => aws_subnet.these_data[az].id }
 }
 
+output "private_route_table_ids" {
+  value = { for az in local.vpc_azs : az => aws_route_table.private[az].id }
+}
+
+output "public_route_table_ids" {
+  value = { for az in local.vpc_azs : az => aws_route_table.public[az].id }
+}
+
 # DNS
 
 output "dns_zone_id" {

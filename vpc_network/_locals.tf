@@ -1,5 +1,5 @@
 locals {
-  name_prefix = "${terraform.workspace}--${var.project_name}-"
+  name_prefix = "${terraform.workspace}-"
 
   subnet_private_blocks = cidrsubnet(var.cidr_block, 2, 0)
   subnet_public_blocks  = cidrsubnet(var.cidr_block, 2, 1)
