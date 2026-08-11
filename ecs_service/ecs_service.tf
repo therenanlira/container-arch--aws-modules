@@ -10,6 +10,7 @@ resource "aws_ecs_service" "main" {
 
   task_definition = aws_ecs_task_definition.main.arn
   desired_count   = var.task_count
+  force_delete    = var.force_delete
 
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 100

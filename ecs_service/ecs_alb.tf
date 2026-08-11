@@ -13,6 +13,8 @@ resource "aws_alb_target_group" "main" {
   protocol    = "HTTP"
   target_type = "ip"
 
+  deregistration_delay = var.deregistration_delay
+
   health_check {
     healthy_threshold   = lookup(var.service_healthcheck, "healthy_threshold", "3")
     unhealthy_threshold = lookup(var.service_healthcheck, "unhealthy_threshold", "10")
@@ -44,6 +46,8 @@ resource "aws_alb_target_group" "codedeploy" {
   vpc_id      = var.network_values.vpc_id
   protocol    = "HTTP"
   target_type = "ip"
+
+  deregistration_delay = var.deregistration_delay
 
   health_check {
     healthy_threshold   = lookup(var.service_healthcheck, "healthy_threshold", "3")

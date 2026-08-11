@@ -30,6 +30,8 @@ resource "aws_lb_target_group" "vpclink" {
   protocol    = "TCP"
   target_type = "alb"
 
+  deregistration_delay = var.deregistration_delay
+
   target_health_state {
     enable_unhealthy_connection_termination = false
   }
