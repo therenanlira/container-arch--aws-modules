@@ -1,7 +1,7 @@
 # EC2 IAM Role
 
 resource "aws_iam_role" "ec2" {
-  name = substr("${local.name_prefix}-role", 0, 63)
+  name = "${substr(local.global_name_prefix, 0, 59)}-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -15,7 +15,7 @@ resource "aws_iam_role" "ec2" {
   })
 
   tags = merge(local.tags, {
-    Name = substr("${local.name_prefix}-role", 0, 63)
+    Name = "${substr(local.global_name_prefix, 0, 59)}-role"
   })
 }
 
@@ -32,10 +32,10 @@ resource "aws_iam_role_policy_attachment" "these" {
 }
 
 resource "aws_iam_instance_profile" "ec2" {
-  name = substr("${local.name_prefix}-instance-profile", 0, 63)
+  name = "${substr(local.global_name_prefix, 0, 59)}-ec2p"
   role = aws_iam_role.ec2.name
 
   tags = merge(local.tags, {
-    Name = substr("${local.name_prefix}-instance-profile", 0, 63)
+    Name = "${substr(local.global_name_prefix, 0, 59)}-ec2p"
   })
 }

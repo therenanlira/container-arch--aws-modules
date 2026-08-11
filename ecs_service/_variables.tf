@@ -127,6 +127,18 @@ variable "enable_lb" {
   default     = true
 }
 
+variable "force_delete" {
+  description = "Delete the ECS service without waiting for its tasks to drain. Speeds up destroy in disposable environments."
+  type        = bool
+  default     = false
+}
+
+variable "deregistration_delay" {
+  description = "How long the load balancer waits before deregistering a target, in seconds. AWS defaults to 300."
+  type        = number
+  default     = 0
+}
+
 variable "service_listener" {
   description = "The Load Balancer Listener to be forwarded for"
   type        = string
