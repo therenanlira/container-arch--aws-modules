@@ -25,7 +25,7 @@ resource "aws_eip" "eip" {
   domain = "vpc"
 
   tags = {
-    Name = "${local.name_prefix}-eip-${each.key}"
+    Name = "${local.name_prefix}-eip-${substr(each.key, -1, 0)}"
   }
 }
 
@@ -36,6 +36,6 @@ resource "aws_nat_gateway" "natgw" {
   subnet_id     = aws_subnet.these_public[each.key].id
 
   tags = {
-    Name = "${local.name_prefix}-natgw-${each.key}"
+    Name = "${local.name_prefix}-natgw-${substr(each.key, -1, 0)}"
   }
 }

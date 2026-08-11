@@ -62,6 +62,26 @@ jobs:
       - name: Terraform Init (no backend)
         run: terraform init -backend=false
 
+      - name: Stub aliased providers
+        # A module that declares configuration_aliases expects them from its
+        # caller, so validating it standalone fails with "Provider
+        # configuration not present". The stub only exists on the runner.
+        run: |
+          ALIASES=$(grep -rhoE 'configuration_aliases[[:space:]]*=[[:space:]]*\[[^]]*\]' *.tf 2>/dev/null \
+            | grep -oE '[a-z0-9_]+\.[a-z0-9_]+' | sort -u || true)
+
+          if [ -z "$ALIASES" ]; then
+            echo "No configuration_aliases declared, nothing to stub."
+            exit 0
+          fi
+
+          for entry in $ALIASES; do
+            printf 'provider "%s" {\n  alias = "%s"\n}\n\n' "${entry%%.*}" "${entry##*.}"
+          done > _ci_provider_aliases.tf
+
+          echo "Stubbed:"
+          cat _ci_provider_aliases.tf
+
       - name: Terraform Validate
         run: terraform validate
 
