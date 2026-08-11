@@ -1,7 +1,7 @@
 # Service Execution Role
 
 resource "aws_iam_role" "ecs_service_execution_role" {
-  name = substr("${local.name_prefix}-svc-er", 0, 64)
+  name = "${substr(local.global_name_prefix, 0, 57)}-svc-er"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -18,12 +18,12 @@ resource "aws_iam_role" "ecs_service_execution_role" {
   })
 
   tags = merge(local.tags, {
-    Name = substr("${local.name_prefix}-svc-er", 0, 64)
+    Name = "${substr(local.global_name_prefix, 0, 57)}-svc-er"
   })
 }
 
 resource "aws_iam_role_policy" "ecs_service_execution_role" {
-  name = substr("${local.name_prefix}-svc-ep", 0, 64)
+  name = "${substr(local.global_name_prefix, 0, 57)}-svc-ep"
   role = aws_iam_role.ecs_service_execution_role.id
 
   policy = jsonencode({
@@ -58,7 +58,7 @@ resource "aws_iam_role_policy" "ecs_service_execution_role" {
 # Task Execution Role
 
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name = substr("${local.name_prefix}-tsk-er", 0, 64)
+  name = "${substr(local.global_name_prefix, 0, 57)}-tsk-er"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -75,12 +75,12 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   })
 
   tags = merge(local.tags, {
-    Name = substr("${local.name_prefix}-tsk-er", 0, 64)
+    Name = "${substr(local.global_name_prefix, 0, 57)}-tsk-er"
   })
 }
 
 resource "aws_iam_role_policy" "ecs_task_execution_role" {
-  name = substr("${local.name_prefix}-tsk-ep", 0, 64)
+  name = "${substr(local.global_name_prefix, 0, 57)}-tsk-ep"
   role = aws_iam_role.ecs_task_execution_role.id
 
   policy = jsonencode({
@@ -111,7 +111,7 @@ resource "aws_iam_role_policy" "ecs_task_execution_role" {
 resource "aws_iam_role" "ecs_codedeploy_role" {
   count = strcontains(var.deployment_controller, "CODE_DEPLOY") ? 1 : 0
 
-  name = substr("${local.name_prefix}-cdp-er", 0, 64)
+  name = "${substr(local.global_name_prefix, 0, 57)}-cdp-er"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -128,7 +128,7 @@ resource "aws_iam_role" "ecs_codedeploy_role" {
   })
 
   tags = merge(local.tags, {
-    Name = substr("${local.name_prefix}-cdp-er", 0, 64)
+    Name = "${substr(local.global_name_prefix, 0, 57)}-cdp-er"
   })
 }
 
@@ -142,7 +142,7 @@ resource "aws_iam_role_policy_attachment" "ecs_codedeploy_role" {
 resource "aws_iam_role" "ecs_blue_green_role" {
   count = var.enable_lb && local.ecs_blue_green ? 1 : 0
 
-  name = "${substr("${local.name_prefix}", 0, 58)}-bg-er"
+  name = "${substr("${local.global_name_prefix}", 0, 58)}-bg-er"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -159,7 +159,7 @@ resource "aws_iam_role" "ecs_blue_green_role" {
   })
 
   tags = merge(local.tags, {
-    Name = "${substr("${local.name_prefix}", 0, 58)}-bg-er"
+    Name = "${substr("${local.global_name_prefix}", 0, 58)}-bg-er"
   })
 }
 

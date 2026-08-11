@@ -5,6 +5,11 @@ variable "service_name" {
   type        = string
 }
 
+variable "environment" {
+  description = "The deployment environment (e.g., 'dev', 'staging', 'prod')."
+  type        = string
+}
+
 variable "network_values" {
   description = "The network configuration values, including VPC and subnets."
   type = object({
@@ -12,6 +17,8 @@ variable "network_values" {
     private_subnet_ids = map(string)
   })
 }
+
+# EFS
 
 variable "performance_mode" {
   description = "EFS performance mode"

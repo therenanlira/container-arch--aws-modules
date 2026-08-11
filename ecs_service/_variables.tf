@@ -13,6 +13,11 @@ variable "project_name" {
   type        = string
 }
 
+variable "environment" {
+  description = "The deployment environment (e.g., 'dev', 'staging', 'prod')."
+  type        = string
+}
+
 variable "cluster_name" {
   description = "The ARN of the ECS cluster where the service will be deployed."
   type        = string

@@ -1,7 +1,7 @@
 # Elastic Container Registry
 
 resource "aws_ecr_repository" "main" {
-  name         = local.name_prefix
+  name         = local.service_name
   force_delete = true
 
   image_scanning_configuration {
@@ -9,7 +9,7 @@ resource "aws_ecr_repository" "main" {
   }
 
   tags = {
-    Name = local.name_prefix
+    Name = local.service_name
   }
 }
 

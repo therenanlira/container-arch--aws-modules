@@ -5,6 +5,11 @@ variable "common_tags" {
   default     = {}
 }
 
+variable "environment" {
+  description = "The deployment environment (e.g., 'dev', 'staging', 'prod')."
+  type        = string
+}
+
 variable "api_gateway_logging" {
   description = "Enable or not the IAM Role for API Gateway Logging"
   type        = bool

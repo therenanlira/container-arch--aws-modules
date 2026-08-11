@@ -5,6 +5,11 @@ variable "project_name" {
   type        = string
 }
 
+variable "environment" {
+  description = "The deployment environment (e.g., 'dev', 'staging', 'prod')."
+  type        = string
+}
+
 # ECS Service
 
 variable "service_name" {

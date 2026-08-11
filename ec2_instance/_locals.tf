@@ -1,5 +1,6 @@
 locals {
-  name_prefix = "${terraform.workspace}--${var.service_name}-"
+  name_prefix        = "${var.environment}--${var.project_name}-"
+  global_name_prefix = "${terraform.workspace}--${var.project_name}"
 
   # Graviton instance types carry a "g" right after the generation number (t4g, m7g, c7gn).
   ami_architecture = coalesce(var.ami_architecture, can(regex("^[a-z]+[0-9]+g[a-z]*\\.", var.instance_type)) ? "arm64" : "x86_64")
