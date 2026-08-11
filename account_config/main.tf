@@ -1,7 +1,7 @@
 resource "aws_iam_role" "api_gateway_logging" {
   count = var.api_gateway_logging ? 1 : 0
 
-  name = "${data.aws_caller_identity.current.account_id}-apigw-role"
+  name = "${local.global_name_prefix}-apigw-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -17,7 +17,7 @@ resource "aws_iam_role" "api_gateway_logging" {
   })
 
   tags = merge(local.common_tags, {
-    Name = "${data.aws_caller_identity.current.account_id}-apigw-role"
+    Name = "${local.global_name_prefix}-apigw-role"
   })
 }
 

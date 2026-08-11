@@ -1,5 +1,6 @@
 locals {
-  name_prefix = "${terraform.workspace}--${var.service_name}-"
+  name_prefix        = "${var.environment}--${var.service_name}-"
+  global_name_prefix = "${terraform.workspace}--${var.service_name}-"
 
   ecs_blue_green = var.deployment_controller == "ECS" && var.ecs_deployment_type == "BLUE_GREEN"
 

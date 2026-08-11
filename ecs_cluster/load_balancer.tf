@@ -1,10 +1,10 @@
 # Load Balancer
 
 resource "aws_lb" "main" {
-  name = "${local.name_prefix}-lb"
+  name = "${substr(local.name_prefix, 0, 29)}-lb"
 
   internal           = var.load_balancer_internal
-  load_balancer_type = strcontains(var.load_balancer_internal, "true") ? "application" : var.load_balancer_type
+  load_balancer_type = var.load_balancer_internal ? "application" : var.load_balancer_type
 
   subnets         = [for sub in var.network_values.public_subnet_ids : sub]
   security_groups = [aws_security_group.load_balancer.id]
@@ -13,7 +13,7 @@ resource "aws_lb" "main" {
   enable_deletion_protection       = false
 
   tags = {
-    Name = "${local.name_prefix}-lb"
+    Name = "${substr(local.name_prefix, 0, 29)}-lb"
   }
 }
 

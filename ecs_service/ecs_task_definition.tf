@@ -18,6 +18,7 @@ module "ecr_repository" {
   count  = var.container_image == "" ? 1 : 0
   source = "../ecr_repository"
 
+  environment  = var.environment
   service_name = var.service_name
 }
 

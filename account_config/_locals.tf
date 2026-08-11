@@ -1,4 +1,7 @@
 locals {
+  name_prefix        = "${var.environment}-"
+  global_name_prefix = "${terraform.workspace}-"
+
   common_tags = merge(
     var.common_tags,
     {
