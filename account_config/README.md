@@ -21,6 +21,7 @@ module "account_settings" {
 | Nome | Descrição | Tipo | Default |
 | --- | --- | --- | --- |
 | `api_gateway_logging` | Cria a role `<account_id>-apigw-role` com a policy `AmazonAPIGatewayPushToCloudWatchLogs` e a associa em `aws_api_gateway_account` | `bool` | `true` |
+| `environment` | Ambiente de deploy; compõe o nome dos recursos | `string` | — |
 | `common_tags` | Tags base da conta | `map(string)` | `{}` |
 
 ## Outputs

@@ -17,6 +17,7 @@ module "efs" {
 
 | Nome | Descrição | Tipo | Default |
 | --- | --- | --- | --- |
+| `environment` | Ambiente de deploy; compõe o nome dos recursos | `string` | — |
 | `service_name` | Nome do serviço ECS; vira parte do nome do EFS | `string` | — |
 | `network_values` | Output do repositório que usa o módulo [`vpc_network`](../vpc_network) (`vpc_id`, `private_subnet_ids`) | `object` | — |
 | `performance_mode` | Modo de performance do EFS | `string` | `"generalPurpose"` |

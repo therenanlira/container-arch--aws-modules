@@ -53,6 +53,8 @@ module "ecs_cluster" {
 | `load_balancer_internal` | Se `true`, o LB é interno; se `false`, internet-facing | `bool` | — |
 | `load_balancer_type` | Tipo do LB (`application`, `network`) | `string` | — |
 | `user_data_template` | Caminho do template de user data das instâncias EC2 | `string` | — |
+| `enable_vpclink` | Cria o NLB e o VPC Link para integração privada com API Gateway | `bool` | `false` |
+| `deregistration_delay` | Tempo que o load balancer espera antes de desregistrar um alvo, em segundos | `number` | `0` |
 
 ## Outputs
 
@@ -62,3 +64,7 @@ module "ecs_cluster" {
 | `lb_arn` | ARN do Load Balancer |
 | `lb_dns_name` | DNS name do Load Balancer |
 | `lb_listener_arn` | ARN do listener do Load Balancer |
+| `lb_arn_suffix` / `lb_zone_id` | Sufixo do ARN e zone ID do ALB, usados em métricas e em registros alias |
+| `api_gateway_id` | ID do VPC Link (`null` quando `enable_vpclink = false`) |
+| `cloudmap_id` / `cloudmap_name` / `cloudmap_arn` | Namespace do Service Discovery |
+| `service_connect_id` / `service_connect_name` / `service_connect_arn` | Namespace do Service Connect |

@@ -86,6 +86,26 @@ module "ecs_service" {
 | `deployment_controller` | `ECS` (nativo) ou `CODE_DEPLOY` | `string` | `"ECS"` |
 | `ecs_deployment_type` | Estratégia nativa do ECS: `ROLLING` ou `BLUE_GREEN` | `string` | `"ROLLING"` |
 | `ecs_bake_time_in_minutes` | Tempo que blue e green convivem após o desvio do tráfego, antes do ECS matar o blue | `number` | `5` |
+| `environment` | Ambiente de deploy; nomeia os recursos regionais | `string` | — |
+| `container_image` | Imagem do container; vazio faz o módulo resolver a última tag do ECR | `string` | `""` |
+| `task_count` | Quantidade inicial de tasks | `number` | — |
+| `enable_lb` | Cria target group e listener rule no ALB | `bool` | `true` |
+| `force_delete` | Apaga o serviço sem esperar as tasks drenarem; acelera o destroy | `bool` | `false` |
+| `deregistration_delay` | Tempo de drain do target group, em segundos | `number` | `0` |
+| `alb_dns_name` / `alb_zone_id` | DNS e zone ID do ALB, usados no registro alias do Route 53 | `string` | `""` |
+| `alb_arn_suffix` | Sufixo do ARN do ALB, usado nas métricas de rollback | `string` | `""` |
+| `dns_zone_id` / `dns_name` | Zona privada onde o registro do serviço é criado | `string` | `""` |
+| `dns_weight` | Peso da região na routing policy; `null` cria registro simples. Use 100 na ativa e 0 nas passivas | `number` | `null` |
+| `service_discovery_namespace` | Namespace do Cloud Map onde registrar o serviço | `string` | `null` |
+| `enable_service_connect` | Liga o Service Connect no serviço | `bool` | `false` |
+| `service_connect_name` / `service_connect_arn` | Namespace do Service Connect (nome e ARN) | `string` | `null` |
+| `service_protocol` | `appProtocol` do port mapping (`http`, `grpc`, ...) | `string` | `null` |
+| `protocol` | Protocolo do port mapping (`tcp`, `udp`) | `string` | `"tcp"` |
+| `codedeploy_strategy` | Deployment config do CodeDeploy | `string` | `"CodeDeployDefault.ECSAllAtOnce"` |
+| `codedeploy_deployment_option` / `codedeploy_deployment_type` | Opção e tipo do deployment do CodeDeploy | `string` | `WITH_TRAFFIC_CONTROL` / `BLUE_GREEN` |
+| `codedeploy_deployment_termination` | Minutos até terminar as tasks antigas após sucesso | `number` | ver `_variables.tf` |
+| `enable_codedeploy_rollback` | Cria o alarme de taxa de erro que dispara rollback | `bool` | ver `_variables.tf` |
+| `codedeploy_rollback_threshold` / `codedeploy_rollback_period` / `codedeploy_rollback_error_evaluation_period` | Limiar, período e avaliações do alarme de rollback | `number` | ver `_variables.tf` |
 
 ## Deployment
 
@@ -116,10 +136,23 @@ Com `enable_lb = false` (serviços que só conversam por Service Connect), nada 
 
 Durante o deploy o ECS roda as duas revisões ao mesmo tempo, então o cluster precisa de capacidade para o dobro de tasks daquele serviço. O rollback dentro da janela de bake é imediato — é só o tráfego voltar para o blue, que ainda está de pé.
 
+## Balanceamento entre regiões
+
+Com `dns_weight`, o registro do serviço vira um registro com routing policy por peso e `set_identifier` igual à região. Todas as regiões precisam apontar para a **mesma** zona privada — o módulo [`vpc_network`](../vpc_network) cria a zona só na região central e associa as VPCs das demais.
+
+```hcl
+dns_zone_id = data.terraform_remote_state.aws_vpc.outputs.dns_zone_id
+dns_name    = data.terraform_remote_state.aws_vpc.outputs.dns_name
+dns_weight  = local.workspace.dns_weight   # 100 na ativa, 0 na passiva
+```
+
+Failover é trocar os pesos e aplicar; nenhum recurso é recriado. Como peso 0 nunca é sorteado, a troca é manual — é o modelo active/passive.
+
 ## Outputs
 
 | Nome | Descrição |
 | --- | --- |
 | `target_group_arn` | ARN do target group do serviço (`null` quando `enable_lb = false`) |
+| `target_group_arn_suffix` | Sufixo do ARN do target group |
 
 Os demais outputs apenas ecoam as variáveis recebidas.

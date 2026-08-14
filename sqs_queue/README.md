@@ -58,6 +58,7 @@ O nome do tópico é montado com o mesmo padrão do módulo [`sns_topic`](../sns
 | Nome | Descrição |
 | --- | --- |
 | `arn` | ARN da fila |
+| `id` | URL da fila |
 | `dlq_arn` | ARN da dead letter queue |
 | `send_policy_arn` | IAM policy de envio, para anexar em quem produz |
 | `receive_policy_arn` | IAM policy de consumo, para anexar em quem processa |

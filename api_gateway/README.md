@@ -41,6 +41,7 @@ O API Gateway só consegue escrever no CloudWatch se a **conta** tiver uma role 
 | Nome | Descrição | Tipo | Default |
 | --- | --- | --- | --- |
 | `project_name` | Nome do projeto, usado no nome da API e no path do log group | `string` | — |
+| `environment` | Ambiente de deploy; compõe o nome dos recursos | `string` | — |
 | `service_name` | Nome do serviço; compõe o path do log group | `string` | — |
 | `body_file` | Especificação OpenAPI já renderizada (string) | `string` | — |
 | `api_key_names` | Nomes das API keys; cada uma ganha um usage plan (10 burst, 1 req/s, 100k/mês) | `list(string)` | `[]` |

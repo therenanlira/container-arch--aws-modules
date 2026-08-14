@@ -49,6 +49,7 @@ Instâncias em subnet privada precisam de saída para a internet (NAT) ou dos VP
 | `user_data` | Script de user data executado no boot | `string` | `null` |
 | `allowed_ssh_cidrs` | CIDRs liberados na porta 22; vazio = sem ingress (só SSM) | `list(string)` | `["0.0.0.0/0"]` |
 | `iam_policy_arns` | ARNs de policies gerenciadas extras para a role da instância | `list(string)` | `[]` |
+| `ami_architecture` | `x86_64` ou `arm64`; quando `null`, é derivada do tipo de instância | `string` | `null` |
 
 ## Outputs
 
