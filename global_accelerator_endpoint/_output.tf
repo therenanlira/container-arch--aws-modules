@@ -16,6 +16,26 @@ output "traffic_dial_percentage" {
   value = var.traffic_dial_percentage
 }
 
+output "health_check_protocol" {
+  value = var.health_check_protocol
+}
+
+output "health_check_path" {
+  value = var.health_check_path
+}
+
+output "health_check_port" {
+  value = var.health_check_port
+}
+
+output "health_check_interval_seconds" {
+  value = var.health_check_interval_seconds
+}
+
+output "threshold_count" {
+  value = var.threshold_count
+}
+
 # Endpoint Group
 
 output "arn" {

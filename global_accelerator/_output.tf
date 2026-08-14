@@ -8,6 +8,26 @@ output "environment" {
   value = var.environment
 }
 
+output "enabled" {
+  value = var.enabled
+}
+
+output "ip_address_type" {
+  value = var.ip_address_type
+}
+
+output "listener_protocol" {
+  value = var.listener_protocol
+}
+
+output "listener_ports" {
+  value = var.listener_ports
+}
+
+output "client_affinity" {
+  value = var.client_affinity
+}
+
 # Global Accelerator
 
 output "global_accelerator_id" {

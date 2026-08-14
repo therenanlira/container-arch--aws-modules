@@ -97,8 +97,11 @@ resource "aws_iam_role_policy" "ecs_task_execution_role" {
           "ecr:BatchCheckLayerAvailability",
           "ecr:GetDownloadUrlForLayer",
           "ecr:BatchGetImage",
-          "s3:GetObject",
+          "ssm:GetParameter",
+          "dynamodb:*",
           "sqs:*",
+          "sns:*",
+          "s3:*"
         ]
         Resource = "*"
       }

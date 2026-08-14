@@ -144,3 +144,66 @@ output "target_group_arn" {
   value = local.target_group_arn
 }
 
+output "environment" {
+  value = var.environment
+}
+
+output "service_connect_arn" {
+  value = var.service_connect_arn
+}
+
+output "force_delete" {
+  value = var.force_delete
+}
+
+output "deregistration_delay" {
+  value = var.deregistration_delay
+}
+
+output "alb_arn_suffix" {
+  value = var.alb_arn_suffix
+}
+
+output "deployment_controller" {
+  value = var.deployment_controller
+}
+
+output "ecs_deployment_type" {
+  value = var.ecs_deployment_type
+}
+
+output "ecs_bake_time_in_minutes" {
+  value = var.ecs_bake_time_in_minutes
+}
+
+output "codedeploy_strategy" {
+  value = var.codedeploy_strategy
+}
+
+output "codedeploy_deployment_option" {
+  value = var.codedeploy_deployment_option
+}
+
+output "codedeploy_deployment_type" {
+  value = var.codedeploy_deployment_type
+}
+
+output "codedeploy_deployment_termination" {
+  value = var.codedeploy_deployment_termination
+}
+
+output "enable_codedeploy_rollback" {
+  value = var.enable_codedeploy_rollback
+}
+
+output "codedeploy_rollback_threshold" {
+  value = var.codedeploy_rollback_threshold
+}
+
+output "codedeploy_rollback_period" {
+  value = var.codedeploy_rollback_period
+}
+
+output "codedeploy_rollback_error_evaluation_period" {
+  value = var.codedeploy_rollback_error_evaluation_period
+}

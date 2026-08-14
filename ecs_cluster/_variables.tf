@@ -89,7 +89,7 @@ variable "enable_vpclink" {
 variable "deregistration_delay" {
   description = "How long the load balancer waits before deregistering a target, in seconds. AWS defaults to 300."
   type        = number
-  default     = 30
+  default     = 0
 }
 
 # Launch Template
