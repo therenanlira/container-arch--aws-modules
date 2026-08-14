@@ -23,9 +23,6 @@ resource "aws_s3_bucket_replication_configuration" "main" {
           status = var.replica_modification_sync ? "Enabled" : "Disabled"
         }
 
-        sse_kms_encrypted_objects {
-          status = "Disabled"
-        }
       }
 
       destination {

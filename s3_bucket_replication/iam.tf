@@ -1,7 +1,7 @@
 # Replication Role
 
 resource "aws_iam_role" "replication" {
-  name = "${substr("${local.global_name_prefix}", 0, 58)}-s3rep"
+  name = "${substr("${local.source_name}--${var.project_name}--${var.service_name}", 0, 58)}-s3rep"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -18,7 +18,7 @@ resource "aws_iam_role" "replication" {
 }
 
 resource "aws_iam_role_policy" "replication" {
-  name = "${substr("${local.global_name_prefix}", 0, 58)}-s3rep"
+  name = "${substr("${local.source_name}--${var.project_name}--${var.service_name}", 0, 58)}-s3rep"
   role = aws_iam_role.replication.id
 
   policy = jsonencode({
