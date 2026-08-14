@@ -4,8 +4,8 @@ output "topic_suffix" {
   value = var.topic_suffix
 }
 
-output "queue_arn" {
-  value = var.queue_arn
+output "sqs_arn" {
+  value = var.sqs_arn
 }
 
 output "project_name" {
@@ -20,10 +20,6 @@ output "environment" {
   value = var.environment
 }
 
-output "create_subscription" {
-  value = var.create_subscription
-}
-
 output "raw_message_delivery" {
   value = var.raw_message_delivery
 }
@@ -31,9 +27,13 @@ output "raw_message_delivery" {
 # SNS
 
 output "arn" {
-  value = aws_sns_topic.main.arn
+  value = local.topic_arn
 }
 
 output "name" {
-  value = aws_sns_topic.main.name
+  value = one(aws_sns_topic.main[*].name)
+}
+
+output "create_topic" {
+  value = var.create_topic
 }

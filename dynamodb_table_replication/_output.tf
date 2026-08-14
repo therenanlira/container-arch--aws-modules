@@ -7,3 +7,7 @@ output "global_table_arn" {
 output "arn" {
   value = aws_dynamodb_table_replica.main.arn
 }
+
+output "name" {
+  value = split(":", aws_dynamodb_table_replica.main.id)[0]
+}
