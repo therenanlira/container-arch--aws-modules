@@ -28,3 +28,28 @@ variable "vpce_gateways" {
   type        = list(string)
   default     = ["s3", "dynamodb"]
 }
+
+# DNS
+
+variable "create_dns_zone" {
+  description = "Whether to create the private hosted zone. Only the central region creates it; the others associate their VPC to it."
+  type        = bool
+  default     = true
+}
+
+variable "dns_zone_id" {
+  description = "Zone ID of the private hosted zone to associate this VPC with. Required when create_dns_zone is false."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.create_dns_zone || var.dns_zone_id != null
+    error_message = "create_dns_zone = false requires dns_zone_id."
+  }
+}
+
+variable "dns_name" {
+  description = "Name of the private hosted zone when it is not created here."
+  type        = string
+  default     = null
+}
+
