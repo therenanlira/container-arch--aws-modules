@@ -9,3 +9,7 @@ output "service_name" {
 output "arn" {
   value = aws_ssm_parameter.main.arn
 }
+
+output "name" {
+  value = aws_ssm_parameter.main.name
+}

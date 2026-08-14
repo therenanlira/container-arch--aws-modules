@@ -1,18 +1,19 @@
 # SNS
 
 resource "aws_sns_topic" "main" {
-  name = "${local.name_prefix}-${var.topic_suffix}"
+  count = var.create_topic ? 1 : 0
+  name  = "${local.name_prefix}-${var.topic_suffix}"
 
   tags = {
     Name = "${local.name_prefix}-${var.topic_suffix}"
   }
 }
 
-resource "aws_sns_topic_subscription" "main" {
-  count = var.create_subscription ? 1 : 0
+resource "aws_sns_topic_subscription" "these" {
+  for_each = var.sqs_arn
 
-  topic_arn            = aws_sns_topic.main.arn
+  topic_arn            = local.topic_arn
   protocol             = "sqs"
-  endpoint             = var.queue_arn
+  endpoint             = each.value
   raw_message_delivery = var.raw_message_delivery
 }

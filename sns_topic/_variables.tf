@@ -26,20 +26,26 @@ variable "topic_suffix" {
   default     = "sns"
 }
 
-variable "queue_arn" {
-  description = "ARN of the SQS queue subscribed to the topic. May be in another region."
+variable "create_topic" {
+  description = "Whether to create the topic. Set to false to only subscribe queues to an existing topic, passed in topic_arn."
+  type        = bool
+  default     = true
+}
+
+variable "topic_arn" {
+  description = "ARN of an existing topic to subscribe the queues to. Required when create_topic is false."
   type        = string
   default     = null
   validation {
-    condition     = !var.create_subscription || var.queue_arn != null
-    error_message = "create_subscription = true requires queue_arn."
+    condition     = var.create_topic || var.topic_arn != null
+    error_message = "create_topic = false requires topic_arn."
   }
 }
 
-variable "create_subscription" {
-  description = "Whether to subscribe the queue to the topic."
-  type        = bool
-  default     = true
+variable "sqs_arn" {
+  description = "Queues subscribed to the topic, keyed by a stable label such as the region. Keys must be known at plan time; the ARNs may be in other regions."
+  type        = map(string)
+  default     = {}
 }
 
 variable "raw_message_delivery" {
