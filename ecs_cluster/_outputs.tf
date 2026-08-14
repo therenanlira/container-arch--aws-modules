@@ -48,6 +48,14 @@ output "user_data_template" {
   value = var.user_data_template
 }
 
+output "enable_vpclink" {
+  value = var.enable_vpclink
+}
+
+output "deregistration_delay" {
+  value = var.deregistration_delay
+}
+
 # ECS Cluster
 
 output "ecs_cluster_name" {

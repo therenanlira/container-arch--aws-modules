@@ -48,6 +48,14 @@ output "iam_policy_arns" {
   value = var.iam_policy_arns
 }
 
+output "environment" {
+  value = var.environment
+}
+
+output "ami_architecture" {
+  value = var.ami_architecture
+}
+
 # EC2
 
 output "id" {

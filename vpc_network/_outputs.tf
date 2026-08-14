@@ -15,6 +15,10 @@ output "vpce_gateways" {
   value = var.vpce_gateways
 }
 
+output "environment" {
+  value = var.environment
+}
+
 # Network
 
 output "vpc_id" {

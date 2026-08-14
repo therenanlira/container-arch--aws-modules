@@ -12,6 +12,14 @@ output "throughput_mode" {
   value = var.throughput_mode
 }
 
+output "environment" {
+  value = var.environment
+}
+
+output "network_values" {
+  value = var.network_values
+}
+
 # General
 
 output "arn" {

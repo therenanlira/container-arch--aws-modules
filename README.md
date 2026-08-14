@@ -15,6 +15,14 @@ Módulos Terraform reutilizáveis para a arquitetura de containers na AWS (VPC, 
 | [`api_gateway`](api_gateway/README.md) | API Gateway REST a partir de um OpenAPI, com API keys e domínio customizado |
 | [`account_config`](account_config/README.md) | Configurações de conta (role de logging do API Gateway) |
 | [`efs_storage`](efs_storage/README.md) | Sistema de arquivos EFS |
+| [`dynamodb_table`](dynamodb_table/README.md) | Tabela DynamoDB com streams, PITR e autoscaling |
+| [`dynamodb_table_replica`](dynamodb_table_replica/README.md) | Réplica de Global Table do DynamoDB em outra região |
+| [`global_accelerator`](global_accelerator/README.md) | Global Accelerator e listener (IPs anycast) |
+| [`global_accelerator_endpoint`](global_accelerator_endpoint/README.md) | Endpoint group do Global Accelerator, por região |
+| [`s3_bucket`](s3_bucket/README.md) | Bucket S3 com lifecycle e policies por operação |
+| [`s3_bucket_replication`](s3_bucket_replication/README.md) | Replicação entre buckets S3 de regiões diferentes |
+| [`sns_topic`](sns_topic/README.md) | Tópico SNS, com subscription de fila SQS de qualquer região |
+| [`sqs_queue`](sqs_queue/README.md) | Fila SQS com DLQ e policy para publishers SNS multi-região |
 | [`ssm_parameter_store`](ssm_parameter_store/README.md) | Parâmetro no SSM Parameter Store |
 | [`ssm_secrets_manager`](ssm_secrets_manager/README.md) | Segredo no AWS Secrets Manager |
 

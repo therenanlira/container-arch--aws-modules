@@ -1,3 +1,9 @@
+# Variables
+
+output "environment" {
+  value = var.environment
+}
+
 output "common_tags" {
   value = var.common_tags
 }
