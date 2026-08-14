@@ -31,6 +31,12 @@ variable "dns_zone_id" {
   default     = ""
 }
 
+variable "dns_weight" {
+  description = "Weight of this region in the weighted routing policy. When null, a plain record is created instead. Use 100 on the active region and 0 on the passive ones."
+  type        = number
+  default     = null
+}
+
 variable "dns_name" {
   description = "The DNS Name value."
   type        = string

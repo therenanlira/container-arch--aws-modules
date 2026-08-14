@@ -48,9 +48,9 @@ output "public_route_table_ids" {
 # DNS
 
 output "dns_zone_id" {
-  value = aws_route53_zone.private.zone_id
+  value = var.create_dns_zone ? one(aws_route53_zone.private[*].zone_id) : var.dns_zone_id
 }
 
 output "dns_name" {
-  value = aws_route53_zone.private.name
+  value = var.create_dns_zone ? one(aws_route53_zone.private[*].name) : var.dns_name
 }
