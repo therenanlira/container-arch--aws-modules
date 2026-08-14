@@ -47,5 +47,6 @@ O `stream_view_type` é `NEW_AND_OLD_IMAGES`, exigido pela replicação global.
 | Nome | Descrição |
 | --- | --- |
 | `arn` | ARN da tabela — é o que o módulo de réplica consome |
+| `name` | Nome da tabela |
 
 Os demais outputs apenas ecoam as variáveis recebidas.

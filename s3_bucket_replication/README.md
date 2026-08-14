@@ -76,3 +76,4 @@ Os buckets de origem e destino precisam ter versionamento habilitado — o `s3_b
 | --- | --- |
 | `destination_buckets` | Map de região para nome do bucket de destino |
 | `role_arn` | ARN da role de replicação |
+| `source_region` | Região do bucket de origem |

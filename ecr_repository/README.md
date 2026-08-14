@@ -16,6 +16,7 @@ module "ecr_repository" {
 
 | Nome | Descrição | Tipo | Default |
 | --- | --- | --- | --- |
+| `environment` | Ambiente de deploy; compõe o nome dos recursos | `string` | — |
 | `service_name` | Nome do serviço ECS; vira parte do nome do repositório | `string` | — |
 
 ## Outputs

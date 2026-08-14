@@ -38,6 +38,9 @@ O `topic_suffix` precisa ser igual ao `queue_suffix` da fila de destino: a resou
 | `raw_message_delivery` | Entrega a mensagem sem o envelope do SNS | `bool` | `true` |
 
 O `create_subscription` é uma flag em vez de um teste sobre `queue_arn` porque o ARN costuma ser conhecido só no apply, e `count` não aceita valor computado.
+| `create_topic` | Cria o tópico. Com `false`, o módulo só assina filas no tópico informado em `topic_arn` | `bool` | `true` |
+| `topic_arn` | ARN de um tópico existente; obrigatório quando `create_topic = false` | `string` | `null` |
+| `sqs_arn` | Filas assinadas, indexadas por um rótulo estável (a região). As chaves precisam ser conhecidas no plan; os ARNs podem ser de outras regiões | `map(string)` | `{}` |
 
 ## Outputs
 

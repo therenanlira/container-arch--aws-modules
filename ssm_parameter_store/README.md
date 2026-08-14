@@ -27,3 +27,4 @@ O nome do parâmetro é montado como `/<workspace>/<região>/<service_name>` (ex
 | Nome | Descrição |
 | --- | --- |
 | `arn` | ARN do parâmetro (usado em `valueFrom` do `secrets` do `ecs_service`) |
+| `name` | Nome completo do parâmetro |

@@ -27,3 +27,4 @@ A tabela primária precisa existir antes, e continuar existindo: destruir a regi
 | Nome | Descrição |
 | --- | --- |
 | `arn` | ARN da réplica |
+| `name` | Nome da tabela replicada (igual ao da primária) |
